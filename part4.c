@@ -8,22 +8,18 @@ void normalize(INTFLOAT_PTR x){
 
    int msb;
    int nsb;
-   int sign = 1;
+   
+   int sign = (x->fraction & 0x80000000) >> 31;
 
    if (x->fraction == 0x00000000)
       return;
-
-   if ((x->fraction & 0x80000000) == 0x80000000) {
-      sign = -1;
-      x->fraction = ~x->fraction;
-   }
    
-   msb = 0x80000000 & x->fraction;
-   nsb = 0x40000000 & x->fraction;
+   msb = (0x80000000 & x->fraction) >> 31;
+   nsb = (0x40000000 & x->fraction) >> 30;
 
-   while ((msb == 0x80000000 && nsb == 0x40000000) || (msb == 0 && nsb == 0)) {
+   while (msb == nsb) {
       
-      if (msb == 0) {
+      if (msb == 0 || sign == 1) {
          x->fraction = (unsigned int) x->fraction << 1;
          x->exponent = x->exponent - 1;
       } else {
@@ -31,14 +27,11 @@ void normalize(INTFLOAT_PTR x){
          x->exponent = x->exponent + 1;
       }
       
-      msb = 0x80000000 & x->fraction;
-      nsb = 0x40000000 & x->fraction;
+      msb = (0x80000000 & x->fraction) >> 31;
+      nsb = (0x40000000 & x->fraction) >> 30;
             
    }
 
-   if (sign == -1)
-      x->fraction = ~x->fraction; 
-       
    return;
 }
 
