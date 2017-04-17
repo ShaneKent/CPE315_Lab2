@@ -4,8 +4,6 @@
 INTFLOAT make_empty_intfloat (void)
 {
    INTFLOAT i;
-   i.exponent = 0;
-   i.fraction = 0;
 
    return i;
 }
@@ -18,13 +16,14 @@ void extract_float(INTFLOAT_PTR x, float f)
 
    unsigned int i = (unsigned int) * (unsigned int *) &f;
    
-   sign = (i & 0x80000000) >> 31;
+   sign = (i & 0x80000000);
    exponent = (int) (i & 0x7F800000) >> 23;
    exponent = exponent - 127;
-   fraction = (int) (i & 0x007FFFFF) + 0x00800000;
-   if (sign == 1)
-      fraction = ~fraction;
+   fraction = (int) ((i & 0x007FFFFF) << 7) + 0x40000000;
    
+   if (sign == 0x80000000)
+      fraction = ~fraction;
+
    x->exponent = exponent;
    x->fraction = fraction;
 
