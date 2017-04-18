@@ -1,12 +1,6 @@
 #include <stdio.h>
 #include "part2.h"
-
-INTFLOAT make_empty_intfloat (void)
-{
-   INTFLOAT i;
-
-   return i;
-}
+#include "part3.h"
 
 void extract_float(INTFLOAT_PTR x, float f)
 {  
@@ -16,23 +10,24 @@ void extract_float(INTFLOAT_PTR x, float f)
 
    unsigned int i = (unsigned int) * (unsigned int *) &f;
    
-   sign = (i & 0x80000000);
-   exponent = (int) (i & 0x7F800000) >> 23;
-   exponent = exponent - 127;
-   fraction = (int) ((i & 0x007FFFFF) << 7) + 0x40000000;
-   
-   if (sign == 0x80000000)
-      fraction = ~fraction;
+   sign     = (i & 0x80000000) >> 31;
+   exponent = (i & 0x7F800000) >> 23;
+   fraction = (i & 0x007FFFFF) << 7;
 
-   x->exponent = exponent;
+   fraction |= 0x40000000;
+   
+   if (sign == 1)
+      fraction = ~fraction + 1; 
+
    x->fraction = fraction;
+   x->exponent = exponent - 127 + 1;
 
    return;
 }
 
-void print_intfloat(INTFLOAT_PTR x, float f)
+void print_intfloat(INTFLOAT_PTR x)
 {
-   printf("  Float: %f\n", f);
+   printf("  Float: %f\n", get_float(x));
    printf("  Exponent: %d\n", x->exponent);
    printf("  Fraction: 0x%08x\n", x->fraction);
 
@@ -42,33 +37,24 @@ void print_intfloat(INTFLOAT_PTR x, float f)
 void part2()
 {
    INTFLOAT tc1, tc2, tc3, tc4;
-   float f1, f2, f3, f4;
 
    printf("=========Part 2==========\n");
 
    printf("2a. Test case: 0x40C80000\n");
-   tc1 = make_empty_intfloat();
-   f1 = 6.25;
-   extract_float(&tc1, f1);
-   print_intfloat(&tc1, f1);
+   extract_float(&tc1, 6.25);
+   print_intfloat(&tc1);
 
    printf("2b. Test case: 0xC3000000\n");
-   tc2 = make_empty_intfloat();
-   f2 = -128.0;
-   extract_float(&tc2, f2);
-   print_intfloat(&tc2, f2);
+   extract_float(&tc2, -128.0);
+   print_intfloat(&tc2);
 
    printf("2c. Test case: 0x3e000000\n");
-   tc3 = make_empty_intfloat();
-   f3 = 0.125;
-   extract_float(&tc3, f3);
-   print_intfloat(&tc3, f3);
+   extract_float(&tc3, 0.125);
+   print_intfloat(&tc3);
    
    printf("2d. Test case: 0x3EAAAAAB\n");
-   tc4 = make_empty_intfloat();
-   f4 = 0.33333334;
-   extract_float(&tc4, f4);
-   print_intfloat(&tc4, f4);
+   extract_float(&tc4, 0.33333334);
+   print_intfloat(&tc4);
 
    printf("=========================\n\n");
 

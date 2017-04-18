@@ -9,8 +9,6 @@ void normalize(INTFLOAT_PTR x){
    int msb;
    int nsb;
    
-   int sign = (x->fraction & 0x80000000) >> 31;
-
    if (x->fraction == 0x00000000)
       return;
    
@@ -19,13 +17,8 @@ void normalize(INTFLOAT_PTR x){
 
    while (msb == nsb) {
       
-      if (msb == 0 || sign == 1) {
-         x->fraction = (unsigned int) x->fraction << 1;
-         x->exponent = x->exponent - 1;
-      } else {
-         x->fraction = (unsigned int) x->fraction >> 1;
-         x->exponent = x->exponent + 1;
-      }
+      x->fraction = (unsigned int) x->fraction << 1;
+      x->exponent = x->exponent - 1;
       
       msb = (0x80000000 & x->fraction) >> 31;
       nsb = (0x40000000 & x->fraction) >> 30;
@@ -43,7 +36,7 @@ void print_exp_fraction(INTFLOAT_PTR x) {
 }
 
 void part4 (void) {
-   
+      
    INTFLOAT tc1, tc2, tc3, tc4;
 
    printf("=========Part 4==========\n");
@@ -77,6 +70,6 @@ void part4 (void) {
    print_exp_fraction(&tc4);
    
    printf("=========================\n");
-
+   
    return;
 }
