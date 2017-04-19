@@ -7,26 +7,31 @@
 
 void part6 (void) {
 
-   INTFLOAT tc1, tc2, r;
-   float f1 = 3.0, f2 = 1.0;
-   float r1 = f1-f2;
+   INTFLOAT t1a, t2a, t1b, t2b, t1c, t2c, r;
+   float f1 = 3.0, f2 = 1.0,f3 = -1.0, f4 = 2.0; 
 
-   extract_float(&tc1, f1);
-   extract_float(&tc2, f2);
-   /*extract_float(&tc3, f3);
-   extract_float(&tc4, f4);*/
+   extract_float(&t1a, f1);
+   extract_float(&t2a, f2);
+   extract_float(&t1b, f1);
+   extract_float(&t2b, f3);
+   extract_float(&t1c, f4);
+   extract_float(&t2c, f4);
 
    printf("=========Part 6==========\n");
 
-   print_intfloat(&tc1);
-   print_intfloat(&tc2);
-
-   fsub(&tc1, &tc2, &r);
+   fsub(&t1a, &t2a, &r);
    printf("6a. 0x40400000 and 0x3F800000 (3 - 1)\n");
-   /*print_intfloat(&tc1);
-   print_intfloat(&tc2);*/
-   print_intfloat(&r);
-   print6(&r, r1);
+   print6(&r);
+
+   fsub(&t1b, &t2b, &r);
+   printf("6b. 0x40400000 and 0xBF800000 (3 - (-1) )\n");
+   print6(&r);
+
+   fsub(&t1c, &t2c, &r);
+   printf("6c. 0x40000000 and 0x40000000\n");
+   print6(&r);
+
+   printf("=========================\n\n");
 
    return;
 }
@@ -59,7 +64,9 @@ void fsub(INTFLOAT_PTR a, INTFLOAT_PTR b, INTFLOAT_PTR result)
    return;
 }
 
-void print6(INTFLOAT_PTR result, float resultD)
+void print6(INTFLOAT_PTR result)
 {
-   printf("  Diff:0x%f (%f)\n", get_float(result), resultD);
+   float r = get_float(result);
+   unsigned int k = (unsigned int) * (unsigned int *) &r;
+   printf("  Diff:0x%08x (%1.3f)\n", k, r);
 }

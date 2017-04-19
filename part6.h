@@ -3,6 +3,6 @@
 
 void part6 (void);
 void fsub(INTFLOAT_PTR a, INTFLOAT_PTR b, INTFLOAT_PTR result);
-void print6(INTFLOAT_PTR result, float resultD);
+void print6(INTFLOAT_PTR result);
 
 #endif
