@@ -13,7 +13,7 @@ void part5 (void) {
    float b_f1 = 1.0, b_f2 = 0.25, b_f3;
    float c_f1 = 4.0, c_f2 = -0.125, c_f3;
 
-   printf("\n=========Part 5==========\n");
+   printf("=========Part 5==========\n");
 
    extract_float(&a_tc1, a_f1);
    extract_float(&a_tc2, a_f2);
@@ -38,6 +38,8 @@ void part5 (void) {
    printf("5c. 0x40800000 and 0xBE000000 (4 and (-.125))\n");
    c_f3 = get_float(&c_tc3);
    printf("  Sum:0x%08x  (%1.3f)\n", (unsigned int) * (unsigned int *) &c_f3, c_f3);
+   
+   printf("=========================\n\n");
    
    return;
 }

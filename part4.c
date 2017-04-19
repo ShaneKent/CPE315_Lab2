@@ -69,7 +69,7 @@ void part4 (void) {
    printf("4d. ");
    print_exp_fraction(&tc4);
    
-   printf("=========================\n");
+   printf("=========================\n\n");
    
    return;
 }
