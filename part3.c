@@ -11,6 +11,9 @@ float get_float(INTFLOAT_PTR x) {
    unsigned int exponent = x->exponent;
    int sign;
 
+   if (fraction == 0)
+      return 0;
+
    sign = fraction & 0x80000000;
 
    if (sign == 0x80000000)
